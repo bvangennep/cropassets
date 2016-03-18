@@ -1,0 +1,21 @@
+{
+    "name": "boboldehampsink/cropassets",
+    "description": "Crop Assets Plugin for Craft CMS",
+    "authors": [
+        {
+            "name": "Bob Olde Hampsink",
+            "email": "b.oldehampsink@nerds.company",
+            "homepage": "http://github.com/boboldehampsink",
+            "role": "Developer"
+        }
+    ],
+    "license": "MIT",
+    "type": "craft-plugin",
+    "require": {
+        "php": "^5.3|^7.0",
+        "ext-gd": "*",
+        "ext-mbstring": "*",
+        "ext-mcrypt": "*",
+        "composer/installers": "~1.0"
+    }
+}
