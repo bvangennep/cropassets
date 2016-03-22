@@ -18,5 +18,8 @@ Roadmap
 
 Changelog
 =================
+###1.0.1###
+ - Fixed case sensitive path to js resource
+
 ###1.0.0###
  - Initial release
