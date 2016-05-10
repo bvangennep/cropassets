@@ -192,7 +192,7 @@ class CropAssetsFieldType extends AssetsFieldType
      */
     private function prepValueForSite($value)
     {
-        if (is_array($value)) {
+        if (is_array($value) && array_key_exists(0, $value)) {
 
             // Get image
             $image = craft()->assets->getFileById($value[0]);
