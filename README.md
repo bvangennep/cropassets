@@ -18,6 +18,9 @@ Roadmap
 
 Changelog
 =================
+###1.0.2###
+ - Verify that the image is present to prevent errors
+
 ###1.0.1###
  - Fixed case sensitive path to js resource
 
