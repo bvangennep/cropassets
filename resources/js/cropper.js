@@ -7,6 +7,7 @@
 /* eslint prefer-template: 0 */
 /* global Craft */
 /* global Garnish */
+/* global Cropper */
 /* global $ */
 
 /**
@@ -21,7 +22,9 @@ function initCropper(handle, elementId, aspectRatio) {
     elementId: elementId,
   }, function (response) {
     var modal = null;
-    var source;
+    var source = handle + ':' + elementId;
+    var image;
+    var cropper;
 
     if (response.error) {
       alert(response.error);
@@ -38,36 +41,51 @@ function initCropper(handle, elementId, aspectRatio) {
       Craft.ImageUpload.$modalContainerDiv.empty().append(response.html);
 
       if (!modal) {
-        modal = new Craft.ImageModal(Craft.ImageUpload.$modalContainerDiv, {
-          postParameters: {},
-          cropAction: 'cropAssets/applyCrop',
-          onImageSave: function (resp) {
-            Craft.cp.displayNotice(resp.message);
-          },
-        });
-
+        modal = new Craft.ImageModal(Craft.ImageUpload.$modalContainerDiv, {});
         modal.imageHandler = modal.settings;
       } else {
         modal.show();
       }
 
+      // Initialize
+      image = Craft.ImageUpload.$modalContainerDiv.find('img');
+      cropper = new Cropper(image[0], {
+        aspectRatio: aspectRatio,
+        movable: false,
+        zoomable: false,
+        rotatable: false,
+        data: response.settings,
+      });
+
       modal.bindButtons();
-      modal.addListener(modal.$saveBtn, 'click', 'saveImage');
+
+      // Save cropped image
+      modal.addListener(modal.$saveBtn, 'click', function () {
+        cropper.getCroppedCanvas().toBlob(function (blob) {
+          var formData = new FormData();
+          formData.append(Craft.csrfTokenName, Craft.csrfTokenValue);
+          formData.append('croppedImage', blob, response.filename);
+          formData.append('elementId', elementId);
+          formData.append('settings', JSON.stringify(cropper.getData(true)));
+
+          $.ajax('/actions/cropAssets/applyCrop', {
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (resp) {
+              Craft.cp.displayNotice(resp.message);
+              modal.hide();
+            },
+            error: function (resp) {
+              Craft.cp.displayNotice(resp.message);
+            },
+          });
+        });
+      });
       modal.addListener(modal.$cancelBtn, 'click', 'cancel');
 
       modal.removeListener(Garnish.Modal.$shade, 'click');
-
-      Craft.ImageUpload.$modalContainerDiv.find('img').load(function () {
-        var areaTool = new Craft.ImageAreaTool({
-          aspectRatio: aspectRatio,
-          initialRectangle: {
-            mode: 'auto',
-          },
-        }, modal);
-        areaTool.showArea();
-        areaTool.containingModal.source = handle + ':' + elementId;
-        modal.cropAreaTool = areaTool;
-      });
     }
   });
 }

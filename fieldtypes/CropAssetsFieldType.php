@@ -192,26 +192,15 @@ class CropAssetsFieldType extends AssetsFieldType
      */
     private function prepValueForSite($value)
     {
-        if (is_array($value) && array_key_exists(0, $value)) {
-
-            // Get image
-            $image = craft()->assets->getFileById($value[0]);
-
-            // Validate image
-            if ($image) {
-
-                // Set up attributes
-                $attributes = array_merge(
-                    $image->getAttributes(),
-                    array(
-                        'handle' => $this->model->handle,
-                        'settings' => $this->getSettings(),
-                    )
-                );
-
-                // Return video models
-                return CropAssetsModel::populateModel($attributes);
+        $targetAssets = [];
+        foreach ($value as $sourceAssetId) {
+            $cropAssets = craft()->cropAssets->getCropAssetsModelBySource($sourceAssetId);
+            if ($cropAssets && $cropAssets->targetAssetId) {
+                $targetAssets[] = $cropAssets->targetAssetId;
+            } else {
+                $targetAssets[] = $sourceAssetId;
             }
         }
+        return parent::prepValue($targetAssets);
     }
 }

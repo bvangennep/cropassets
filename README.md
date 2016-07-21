@@ -6,6 +6,12 @@ Plugin/FieldType that allows you to crop an asset and show it in the front-end.
 __Important__  
 The plugin's folder should be named "cropassets"  
 
+Install
+=================
+
+This plugin depends on [cropper.js](https://github.com/fengyuanchen/cropperjs)
+Either run npm install in the plugin resources directory or extract cropperjs into the resources/node_modules/cropperjs folder.
+
 Usage
 =================
 This plugin provides a Crop Assets FieldType that works like the Asset FieldType.  
