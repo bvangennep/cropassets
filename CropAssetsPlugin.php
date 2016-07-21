@@ -64,4 +64,16 @@ class CropAssetsPlugin extends BasePlugin
     {
         return 'https://github.com/boboldehampsink';
     }
+
+    /**
+     * Register the schematic AssetsField model forthe CropAssets field
+     *
+     * @return array
+     */
+    public function registerSchematicFieldModels()
+    {
+        return [
+            'CropAssets' => 'NerdsAndCompany\Schematic\Models\AssetsField'
+        ];
+    }
 }
