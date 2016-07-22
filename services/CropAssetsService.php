@@ -29,6 +29,25 @@ class CropAssetsService extends BaseApplicationComponent
     }
 
     /**
+     * Get the size of the modal based on the asset
+     *
+     * @param  AssetFileModel $file
+     * @return array
+     */
+    public function getCropModalSize(AssetFileModel $asset)
+    {
+        $aspectRatio = $asset->getWidth() / $asset->getHeight();
+        if ($aspectRatio > 1) {
+            $width = 500;
+            $height = 500 / $aspectRatio;
+        } else {
+            $height = 500;
+            $width = 500 * $aspectRatio;
+        }
+        return [$width, $height];
+    }
+
+    /**
      * Get a CropAssetsmodel by sourceAssetId, or new if it does not exist
      *
      * @param  int $sourceAssetId

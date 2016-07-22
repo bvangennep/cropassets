@@ -35,15 +35,8 @@ class CropAssetsController extends BaseController
 
         try {
             // If the file is in the format badscript.php.gif perhaps.
-            if ($asset->getWidth() && $asset->getHeight()) {
-                $aspectRatio = $asset->getWidth() / $asset->getHeight();
-                if ($aspectRatio > 1) {
-                    $width = 500;
-                    $height = 500 / $aspectRatio;
-                } else {
-                    $height = 500;
-                    $width = 500 * $aspectRatio;
-                }
+            if ($asset->getWidth()) {
+                list($width, $height) = craft()->cropAssets->getCropModalSize($asset);
 
                 $html = craft()->templates->render('_components/tools/cropper_modal',
                     array(
@@ -66,7 +59,7 @@ class CropAssetsController extends BaseController
     }
 
     /**
-     * Crop asset.
+     * Save cropped asset
      */
     public function actionApplyCrop()
     {
