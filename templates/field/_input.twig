@@ -8,7 +8,7 @@
 {% set criteria = (criteria is defined and criteria ? criteria : null) -%}
 {% set storageKey = (storageKey is defined and storageKey ? storageKey : null) -%}
 
-<div id="{{ id }}" class="elementselect">
+<div id="{{ id }}" class="elementselect cropassets">
 	<div class="elements">
 		{% for element in elements %}
 			{% include "_elements/element" with {
@@ -38,7 +38,8 @@
         modalStorageKey: "{{ storageKey }}",
         fieldId: "{{ fieldId }}",
         onSelectElements: function(elements) {
-            initCropper('{{ name }}', elements[0].id, '{{ aspectRatio }}');
+            CropAssets.initCropper(elements[0].id, '{{ aspectRatio }}');
+			CropAssets.applyContextMenu();
         }
     });
 {% endincludejs %}

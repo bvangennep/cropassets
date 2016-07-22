@@ -90,7 +90,7 @@
     errors: settings.getErrors('selectionLabel')
 }) }}
 
-{{ forms.textField({
+{# {{ forms.textField({
     label: "Scale to fit - Width"|t,
     instructions: "Enter a value if you want the cropped image to fit to a width."|t,
     id: 'scaleToFitWidth',
@@ -108,7 +108,7 @@
     value: settings.scaleToFitHeight,
     size: 5,
     errors: settings.getErrors('scaleToFitHeight')
-}) }}
+}) }} #}
 
 {{ forms.textField({
     label: "Aspect Ratio"|t,
