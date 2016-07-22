@@ -16,6 +16,19 @@ namespace Craft;
 class CropAssetsService extends BaseApplicationComponent
 {
     /**
+     * Get the asset source to store the cropped image in
+     *
+     * @return AssetSourceModel
+     */
+    public function getAssetSource()
+    {
+        $sourceTypeHandle = craft()->plugins->getPlugin('cropAssets')->getSettings()->assetSource;
+
+        $record = AssetSourceRecord::model()->findByAttributes(['handle' => $sourceTypeHandle]);
+        return $record ? AssetSourceModel::populateModel($record) : null;
+    }
+
+    /**
      * Get a CropAssetsmodel by sourceAssetId, or new if it does not exist
      *
      * @param  int $sourceAssetId
@@ -56,16 +69,14 @@ class CropAssetsService extends BaseApplicationComponent
 
     /**
      * Upload a cropped asset
-     * @TODO: Get folderID from plugin settings
      *
      * @return AssetOperationResponseModel
      */
-    public function uploadCroppedAsset()
+    public function uploadCroppedAsset(AssetSourceModel $source)
     {
-        $folderId = 2;
         $uploadedFile = UploadedFile::getInstanceByName('croppedImage');
         if ($uploadedFile) {
-            $assetOperationResult = craft()->assets->insertFileByLocalPath($uploadedFile->tempName, $uploadedFile->name, $folderId, AssetConflictResolution::KeepBoth);
+            $assetOperationResult = craft()->assets->insertFileByLocalPath($uploadedFile->tempName, $uploadedFile->name, $source->id, AssetConflictResolution::KeepBoth);
         } else {
             $assetOperationResult = new AssetOperationResponseModel();
             $assetOperationResult->setsetError('No source image was found');

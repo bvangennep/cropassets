@@ -22,6 +22,10 @@ class CropAssetsController extends BaseController
     {
         $this->requireAjaxRequest();
         $elementId = craft()->request->getParam('elementId');
+        $folder = craft()->cropAssets->getAssetSource();
+        if ($folder === null) {
+            $this->returnErrorJson(Craft::t('No asset source has been configured for cropped assets.'));
+        }
 
         // Get the asset file
         $asset = craft()->assets->getFileById($elementId);
@@ -69,8 +73,12 @@ class CropAssetsController extends BaseController
         $this->requireAjaxRequest();
         $elementId = craft()->request->getRequiredPost('elementId');
         $settings = craft()->request->getRequiredPost('settings');
+        $folder = craft()->cropAssets->getAssetSource();
+        if ($folder === null) {
+            $this->returnErrorJson(Craft::t('No asset source has been configured for cropped assets.'));
+        }
 
-        $assetOperationResult = craft()->cropAssets->uploadCroppedAsset();
+        $assetOperationResult = craft()->cropAssets->uploadCroppedAsset($folder);
         if ($assetOperationResult->isSuccess()) {
             $cropAssets = craft()->cropAssets->getCropAssetsModelBySource($elementId);
             $cropAssets->sourceAssetId = $elementId;

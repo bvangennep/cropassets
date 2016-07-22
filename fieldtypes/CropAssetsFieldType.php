@@ -20,7 +20,7 @@ class CropAssetsFieldType extends AssetsFieldType
      *
      * @var string
      */
-    protected $inputTemplate = 'cropAssets/_input';
+    protected $inputTemplate = 'cropAssets/field/_input';
 
     /**
      * Get fieldtype name.
@@ -82,7 +82,7 @@ class CropAssetsFieldType extends AssetsFieldType
         $namespace = craft()->templates->getNamespace();
         $isMatrix = (strncmp($namespace, 'types[Matrix][blockTypes][', 26) === 0);
 
-        return craft()->templates->render('cropAssets/_settings', array(
+        return craft()->templates->render('cropAssets/field/_settings', array(
             'folderOptions' => $folderOptions,
             'sourceOptions' => $sourceOptions,
             'targetLocaleField' => $this->getTargetLocaleFieldHtml(),

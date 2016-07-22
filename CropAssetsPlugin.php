@@ -66,6 +66,26 @@ class CropAssetsPlugin extends BasePlugin
     }
 
     /**
+     * @return array
+     */
+    public function defineSettings()
+    {
+        return array(
+            'assetSource' => AttributeType::String,
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getSettingsHtml()
+    {
+        return craft()->templates->render('cropAssets/_settings.twig', array(
+            'settings' => $this->getSettings(),
+        ));
+    }
+
+    /**
      * Register the schematic AssetsField model forthe CropAssets field
      *
      * @return array
