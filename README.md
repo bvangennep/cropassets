@@ -18,12 +18,13 @@ This plugin provides a Crop Assets FieldType that works like the Asset FieldType
 You can upload/select an asset and a crop modal will appear.
 After cropping you can show the cropped asset in the front-end.
 
-Roadmap
-=================
- - Saving of the cropped asset in stead of real-time cropping it?
-
 Changelog
 =================
+###2.0.0###
+ - Rebuild to make use of client-side cropping with [cropperjs](https://github.com/fengyuanchen/cropperjs)
+ - This is mainly done to prevent memory issues on the server.
+ - The cropped asset is stored in a configured asset source
+
 ###1.0.2###
  - Verify that the image is present to prevent errors
 
