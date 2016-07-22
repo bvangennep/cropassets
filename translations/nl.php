@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'Crop assets' => 'Afbeeldingen bijsnijden',
+    'Crop Assets' => 'Afbeeldingen bijsnijden',
     'Crop asset' => 'Afbeelding bijsnijden',
     'Adds the ability to manually crop and resize assets per field.' => 'Voegt de mogelijkheid toe om handmatig afbeeldingen bij te snijden per veld.',
     'Add an image' => 'Afbeelding toevoegen',

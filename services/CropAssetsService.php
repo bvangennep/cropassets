@@ -55,8 +55,19 @@ class CropAssetsService extends BaseApplicationComponent
      */
     public function getCropAssetsModelBySource($sourceAssetId)
     {
+        return $this->getCropAsset(['sourceAssetId' => $sourceAssetId]);
+    }
+
+    /**
+     * Get crop assets by attributes
+     *
+     * @param  array  $attributes
+     * @return CropAssetsModel
+     */
+    public function getCropAsset(array $attributes)
+    {
         $model = new CropAssetsModel();
-        $record = CropAssetsRecord::model()->findByAttributes(['sourceAssetId' => $sourceAssetId]);
+        $record = CropAssetsRecord::model()->findByAttributes($attributes);
         if ($record) {
             $model = CropAssetsModel::populateModel($record);
         }
@@ -70,7 +81,7 @@ class CropAssetsService extends BaseApplicationComponent
      * @param  CropAssetsModel $cropAssets
      * @return bool
      */
-    public function saveCropAssets(CropAssetsModel $cropAssets)
+    public function saveCropAsset(CropAssetsModel $cropAssets)
     {
         $record = CropAssetsRecord::model()->findByAttributes(['id' => $cropAssets->id]);
         if ($record) {
@@ -83,7 +94,9 @@ class CropAssetsService extends BaseApplicationComponent
         $record->setAttributes($cropAssets->getAttributes());
         $record->settings = $cropAssets->settings;
 
-        return $record->save();
+        $success = $record->save();
+        $cropAssets->setAttributes($record->getAttributes());
+        return $success;
     }
 
     /**

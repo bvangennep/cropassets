@@ -19,9 +19,10 @@ var CropAssets = {
    * @param  {Number} elementId
    * @param  {Number} aspectRatio
    */
-  initCropper: function(elementId, aspectRatio) {
+  initCropper: function (elementId, aspectRatio, fieldId, cropAssetId) {
     Craft.postActionRequest('cropAssets/prepareForCrop', {
       elementId: elementId,
+      cropAssetId: cropAssetId,
     }, function (response) {
       var modal = null;
       var image;
@@ -67,6 +68,8 @@ var CropAssets = {
             formData.append(Craft.csrfTokenName, Craft.csrfTokenValue);
             formData.append('croppedImage', blob, response.filename);
             formData.append('elementId', elementId);
+            formData.append('fieldId', fieldId);
+            formData.append('cropAssetId', cropAssetId);
             formData.append('settings', JSON.stringify(cropper.getData(true)));
 
             $.ajax('/actions/cropAssets/applyCrop', {
@@ -76,6 +79,7 @@ var CropAssets = {
               contentType: false,
               success: function (resp) {
                 Craft.cp.displayNotice(resp.message);
+                $('#fields-cropassets-' + fieldId).val(resp.cropAssetId);
                 modal.hide();
               },
               error: function (resp) {
@@ -94,11 +98,16 @@ var CropAssets = {
   applyContextMenu: function () {
     var $elements = $('.cropassets .element');
     $elements.each(function () {
+      var $container = $(this).closest('.cropassets');
       var elementId = $(this).data('id');
+      var fieldId = $container.data('field-id');
+      var aspectratio = $container.data('aspectratio');
+      var cropassetId = $('#fields-cropassets-' + fieldId).val();
+
       var menuOptions = [{
         label: Craft.t('Crop asset'),
         onClick: function () {
-          CropAssets.initCropper(elementId, 'aspectRation');
+          CropAssets.initCropper(elementId, aspectratio, fieldId, cropassetId);
         },
       }];
       new Garnish.ContextMenu(this, menuOptions, { menuClass: 'menu' });

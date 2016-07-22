@@ -33,16 +33,6 @@ class CropAssetsFieldType extends AssetsFieldType
     }
 
     /**
-     * We're going to save an array crop values.
-     *
-     * @return mixed
-     */
-    public function defineContentAttribute()
-    {
-        return AttributeType::Mixed;
-    }
-
-    /**
      * Return criteria in back-end and cropped images in front-end.
      *
      * @param mixed $value
@@ -92,6 +82,27 @@ class CropAssetsFieldType extends AssetsFieldType
         ));
     }
 
+    /**
+     * Update entryId of the cropAsset after saving the element
+     *
+     * {@inheritdoc}
+     */
+    public function onAfterElementSave()
+    {
+        parent::onAfterElementSave();
+
+        $fieldId = $this->model->id;
+        $postedFields = craft()->request->getPost('fields');
+
+        if (isset($postedFields['cropassets'][$fieldId])) {
+            $cropAssetId = $postedFields['cropassets'][$fieldId];
+            $cropAsset = craft()->cropAssets->getCropAsset(['id' => $cropAssetId]);
+            $cropAsset->entryId = $this->element->id;
+
+            craft()->cropAssets->saveCropAsset($cropAsset);
+        }
+    }
+
     // Protected
     // =========================================================================
 
@@ -115,8 +126,14 @@ class CropAssetsFieldType extends AssetsFieldType
      */
     protected function getInputTemplateVariables($name, $criteria)
     {
+        $cropAsset = craft()->cropAssets->getCropAsset([
+            'entryId' => $this->element->id,
+            'fieldId' => $this->model->id,
+        ]);
+
         $variables = parent::getInputTemplateVariables($name, $criteria);
         $variables['aspectRatio'] = $this->getSettings()->aspectRatio;
+        $variables['cropAsset'] = $cropAsset;
 
         return $variables;
     }

@@ -22,6 +22,8 @@ class CropAssetsController extends BaseController
     {
         $this->requireAjaxRequest();
         $elementId = craft()->request->getParam('elementId');
+        $cropAssetId = craft()->request->getParam('cropAssetId');
+
         $folder = craft()->cropAssets->getAssetSource();
         if ($folder === null) {
             $this->returnErrorJson(Craft::t('No asset source has been configured for cropped assets.'));
@@ -31,7 +33,10 @@ class CropAssetsController extends BaseController
         $asset = craft()->assets->getFileById($elementId);
         $source = $asset->getSource();
         $sourceType = $source->getSourceType();
-        $cropAssets = craft()->cropAssets->getCropAssetsModelBySource($elementId);
+        $cropAsset = craft()->cropAssets->getCropAsset([
+            'sourceAssetId' => $elementId,
+            'id' => $cropAssetId,
+        ]);
 
         try {
             // If the file is in the format badscript.php.gif perhaps.
@@ -50,7 +55,7 @@ class CropAssetsController extends BaseController
                 $this->returnJson(array(
                     'html' => $html,
                     'filename' => $asset->filename,
-                    'settings'=> $cropAssets->settings,
+                    'settings'=> $cropAsset->settings,
                 ));
             }
         } catch (Exception $exception) {
@@ -65,6 +70,8 @@ class CropAssetsController extends BaseController
     {
         $this->requireAjaxRequest();
         $elementId = craft()->request->getRequiredPost('elementId');
+        $cropAssetId = craft()->request->getRequiredPost('cropAssetId');
+        $fieldId = craft()->request->getRequiredPost('fieldId');
         $settings = craft()->request->getRequiredPost('settings');
         $folder = craft()->cropAssets->getAssetSource();
         if ($folder === null) {
@@ -73,14 +80,18 @@ class CropAssetsController extends BaseController
 
         $assetOperationResult = craft()->cropAssets->uploadCroppedAsset($folder);
         if ($assetOperationResult->isSuccess()) {
-            $cropAssets = craft()->cropAssets->getCropAssetsModelBySource($elementId);
-            $cropAssets->sourceAssetId = $elementId;
-            $cropAssets->targetAssetId = $assetOperationResult->getDataItem('fileId');
-            $cropAssets->settings = $settings;
+            $cropAsset = craft()->cropAssets->getCropAsset(['id' => $cropAssetId]);
+            $cropAsset->sourceAssetId = $elementId;
+            $cropAsset->targetAssetId = $assetOperationResult->getDataItem('fileId');
+            $cropAsset->fieldId = $fieldId;
+            $cropAsset->settings = $settings;
 
-            craft()->cropAssets->saveCropAssets($cropAssets);
+            craft()->cropAssets->saveCropAsset($cropAsset);
 
-            $this->returnJson(array('message' => Craft::t('Successfully saved crop.')));
+            $this->returnJson([
+                'message' => Craft::t('Successfully saved crop.'),
+                'cropAssetId' => $cropAsset->id,
+            ]);
         }
         $this->returnErrorJson(Craft::t($assetOperationResult->errorMessage));
     }

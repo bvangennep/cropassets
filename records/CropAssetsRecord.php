@@ -15,6 +15,8 @@ namespace Craft;
  * @property int $id
  * @property int $sourceAssetId
  * @property int $targetAssetId
+ * @property int $entryId
+ * @property int $fieldId
  * @property object|array $settings
  */
 class CropAssetsRecord extends BaseRecord
@@ -32,6 +34,8 @@ class CropAssetsRecord extends BaseRecord
         return array(
             'sourceAssetId' => AttributeType::Number,
             'targetAssetId' => AttributeType::Number,
+            'entryId' => AttributeType::Number,
+            'fieldId' => AttributeType::Number,
             'settings' => AttributeType::Mixed,
         );
     }
@@ -42,8 +46,19 @@ class CropAssetsRecord extends BaseRecord
     public function defineRelations()
     {
         return [
-            'sourceAsset' => [static::BELONGS_TO, 'ElementRecord', 'required' => true],
-            'targetAsset' => [static::BELONGS_TO, 'ElementRecord', 'required' => true, 'onDelete' => static::CASCADE],
+            'field' => [static::BELONGS_TO, 'FieldRecord'],
+            'sourceAsset' => [static::BELONGS_TO, 'AssetFileRecord', 'required' => true],
+            'targetAsset' => [static::BELONGS_TO, 'AssetFileRecord', 'required' => true, 'onDelete' => static::CASCADE],
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function defineIndexes()
+    {
+        return array(
+            array('columns' => array('entryId'), 'unique' => false),
+        );
     }
 }

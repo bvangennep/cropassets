@@ -16,6 +16,8 @@ namespace Craft;
  * @property int $id
  * @property int $sourceAssetId
  * @property int $targetAssetId
+ * @property int $entryId
+ * @property int $fieldId
  * @property object|array $settings
  */
 class CropAssetsModel extends Basemodel
@@ -32,6 +34,8 @@ class CropAssetsModel extends Basemodel
              'id' => AttributeType::Number,
              'sourceAssetId' => AttributeType::Number,
              'targetAssetId' => AttributeType::Number,
+             'entryId' => AttributeType::Number,
+             'fieldId' => AttributeType::String,
              'settings' => AttributeType::Mixed,
          );
      }
