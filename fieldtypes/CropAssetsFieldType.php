@@ -43,7 +43,7 @@ class CropAssetsFieldType extends AssetsFieldType
     {
         // Behave as normal asset in back-end
         if (craft()->request->isCpRequest()) {
-            return $this->prepValueForCp($value);
+            return parent::prepValue($value);
         }
 
         return $this->prepValueForSite($value);
@@ -159,65 +159,21 @@ class CropAssetsFieldType extends AssetsFieldType
     // =========================================================================
 
     /**
-     * Prep value for CP.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    private function prepValueForCp($value)
-    {
-        // Overwrite value, if any
-        if ($value) {
-
-            // Unset value
-            $value = null;
-
-            // Fetch target id(s)
-            $results = craft()->db->createCommand()
-                                ->select('targetId')
-                                ->from('relations')
-                                ->where(array(
-                                    'fieldId' => $this->model->id,
-                                    'sourceId' => $this->element->id,
-                                ))
-                                ->queryAll();
-
-            // If db result is valid
-            if ($results && is_array($results)) {
-
-                // Gather value
-                $value = array();
-
-                // Loop through target ids
-                foreach ($results as $result) {
-                    $value[] = $result['targetId'];
-                }
-            }
-        }
-
-        // Return with new values
-        return parent::prepValue($value);
-    }
-
-    /**
      * Prep value for site.
      *
      * @param mixed $value
      *
-     * @return CropAssetsModel|null
+     * @return array
      */
     private function prepValueForSite($value)
     {
-        $targetAssets = [];
-        foreach ($value as $sourceAssetId) {
-            $cropAssets = craft()->cropAssets->getCropAssetsModelBySource($sourceAssetId);
-            if ($cropAssets && $cropAssets->targetAssetId) {
-                $targetAssets[] = $cropAssets->targetAssetId;
-            } else {
-                $targetAssets[] = $sourceAssetId;
-            }
+        $cropAsset = craft()->cropAssets->getCropAsset([
+            'entryId' => $this->element->id,
+            'fieldId' => $this->model->id,
+        ]);
+        if ($cropAsset) {
+            $value = [$cropAsset->targetAssetId];
         }
-        return parent::prepValue($targetAssets);
+        return parent::prepValue($value);
     }
 }
