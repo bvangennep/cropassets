@@ -10,7 +10,8 @@ Install
 =================
 
 This plugin depends on [cropper.js](https://github.com/fengyuanchen/cropperjs)
-Either run npm install in the plugin resources directory or extract cropperjs into the resources/node_modules/cropperjs folder.
+Composer will install this package.
+When not user composer, either run npm install in the plugin root directory or extract cropperjs into the PLUGIN_ROOT/node_modules/cropperjs folder.
 
 Usage
 =================
