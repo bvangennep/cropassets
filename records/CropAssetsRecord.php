@@ -46,9 +46,8 @@ class CropAssetsRecord extends BaseRecord
     public function defineRelations()
     {
         return [
-            'field' => [static::BELONGS_TO, 'FieldRecord'],
             'sourceAsset' => [static::BELONGS_TO, 'AssetFileRecord', 'required' => true],
-            'targetAsset' => [static::BELONGS_TO, 'AssetFileRecord', 'required' => true, 'onDelete' => static::CASCADE],
+            'targetAsset' => [static::BELONGS_TO, 'AssetFileRecord', 'required' => true],
         ];
     }
 
@@ -59,6 +58,7 @@ class CropAssetsRecord extends BaseRecord
     {
         return array(
             array('columns' => array('entryId'), 'unique' => false),
+            array('columns' => array('fieldId'), 'unique' => false)
         );
     }
 }

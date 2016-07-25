@@ -86,6 +86,30 @@ class CropAssetsPlugin extends BasePlugin
     }
 
     /**
+     * Listen for deletion of relations
+     */
+    public function init()
+    {
+        craft()->on('elements.onBeforeDeleteElements', function (Event $event) {
+            $elementIds = $event->params['elementIds'];
+            $cropAssets = craft()->db->createCommand()
+                ->from('cropassets')
+                ->where('entryId in (:ids)')
+                ->orWhere('sourceAssetId in (:ids)')
+                ->bindParam(':ids', implode(',', $elementIds))
+                ->queryAll();
+
+            if (!empty($cropAssets)) {
+                $cropAssetIds = array_column($cropAssets, 'id');
+                $targetAssetIds = array_column($cropAssets, 'targetAssetId');
+
+                CropAssetsRecord::model()->deleteAllByAttributes(['id' => $cropAssetIds]);
+                craft()->assets->deleteFiles($targetAssetIds);
+            }
+        });
+    }
+
+    /**
      * Register the schematic AssetsField model forthe CropAssets field
      *
      * @return array
