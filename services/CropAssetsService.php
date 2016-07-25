@@ -112,8 +112,10 @@ class CropAssetsService extends BaseApplicationComponent
     public function uploadCroppedAsset(AssetSourceModel $source)
     {
         $uploadedFile = UploadedFile::getInstanceByName('croppedImage');
+
         if ($uploadedFile) {
-            $assetOperationResult = craft()->assets->insertFileByLocalPath($uploadedFile->tempName, $uploadedFile->name, $source->id, AssetConflictResolution::KeepBoth);
+            $folder = craft()->assets->getRootFolderBySourceId($source->id);
+            $assetOperationResult = craft()->assets->insertFileByLocalPath($uploadedFile->tempName, $uploadedFile->name, $folder->id, AssetConflictResolution::KeepBoth);
         } else {
             $assetOperationResult = new AssetOperationResponseModel();
             $assetOperationResult->setsetError('No source image was found');
