@@ -16,6 +16,7 @@
         "ext-gd": "*",
         "ext-mbstring": "*",
         "ext-mcrypt": "*",
-        "composer/installers": "~1.0"
+        "composer/installers": "~1.0",
+        "eloquent/composer-npm-bridge": "^3"
     }
 }
