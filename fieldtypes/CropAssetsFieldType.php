@@ -171,7 +171,7 @@ class CropAssetsFieldType extends AssetsFieldType
             'entryId' => $this->element->id,
             'fieldId' => $this->model->id,
         ]);
-        if ($cropAsset) {
+        if ($cropAsset->targetAssetId) {
             $value = [$cropAsset->targetAssetId];
         }
         return parent::prepValue($value);
