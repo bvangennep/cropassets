@@ -81,12 +81,16 @@ class CropAssetsController extends BaseController
         $assetOperationResult = craft()->cropAssets->uploadCroppedAsset($folder);
         if ($assetOperationResult->isSuccess()) {
             $cropAsset = craft()->cropAssets->getCropAsset(['id' => $cropAssetId]);
+            $oldTargetId = $cropAsset->targetAssetId;
             $cropAsset->sourceAssetId = $elementId;
             $cropAsset->targetAssetId = $assetOperationResult->getDataItem('fileId');
             $cropAsset->fieldId = $fieldId;
             $cropAsset->settings = $settings;
 
             craft()->cropAssets->saveCropAsset($cropAsset);
+            if ($oldTargetId) {
+                craft()->assets->deleteFiles([$oldTargetId]);
+            }
 
             $this->returnJson([
                 'message' => Craft::t('Successfully saved crop.'),

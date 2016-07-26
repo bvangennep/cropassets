@@ -84,15 +84,7 @@ class CropAssetsService extends BaseApplicationComponent
     public function saveCropAsset(CropAssetsModel $cropAsset)
     {
         $record = CropAssetsRecord::model()->findByAttributes(['id' => $cropAsset->id]);
-        if ($record) {
-            // Delete old cropped image if image changed
-            if ($record->targetAssetId !== $cropAsset->targetAssetId) {
-                $file = craft()->assets->getfileById($record->targetAssetId);
-                if ($file) {
-                    craft()->assets->deleteFiles([$record->targetAssetId]);
-                }
-            }
-        } else {
+        if ($record === null) {
             $record = new CropAssetsRecord();
         }
 

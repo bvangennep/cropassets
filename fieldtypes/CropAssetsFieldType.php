@@ -126,10 +126,7 @@ class CropAssetsFieldType extends AssetsFieldType
      */
     protected function getInputTemplateVariables($name, $criteria)
     {
-        $cropAsset = craft()->cropAssets->getCropAsset([
-            'entryId' => $this->element->id,
-            'fieldId' => $this->model->id,
-        ]);
+        $cropAsset = $this->getCropAsset();
 
         $variables = parent::getInputTemplateVariables($name, $criteria);
         $variables['aspectRatio'] = $this->getSettings()->aspectRatio;
@@ -167,13 +164,23 @@ class CropAssetsFieldType extends AssetsFieldType
      */
     private function prepValueForSite($value)
     {
-        $cropAsset = craft()->cropAssets->getCropAsset([
-            'entryId' => $this->element->id,
-            'fieldId' => $this->model->id,
-        ]);
+        $cropAsset = $this->getCropAsset();
         if ($cropAsset->targetAssetId) {
             $value = [$cropAsset->targetAssetId];
         }
         return parent::prepValue($value);
+    }
+
+    /**
+     * Get crop asset for model and element
+     *
+     * @return CropAssetModel
+     */
+    private function getCropAsset()
+    {
+        return craft()->cropAssets->getCropAsset([
+            'entryId' => @$this->element->id,
+            'fieldId' => $this->model->id,
+        ]);
     }
 }

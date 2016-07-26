@@ -32,10 +32,10 @@ class CropAssetsRecord extends BaseRecord
     protected function defineAttributes()
     {
         return array(
-            'sourceAssetId' => AttributeType::Number,
-            'targetAssetId' => AttributeType::Number,
+            'sourceAssetId' => [AttributeType::Number, 'required' => true],
+            'targetAssetId' => [AttributeType::Number, 'required' => true],
             'entryId' => AttributeType::Number,
-            'fieldId' => AttributeType::Number,
+            'fieldId' => [AttributeType::Number, 'required' => true],
             'settings' => AttributeType::Mixed,
         );
     }
@@ -58,7 +58,7 @@ class CropAssetsRecord extends BaseRecord
     {
         return array(
             array('columns' => array('entryId'), 'unique' => false),
-            array('columns' => array('fieldId'), 'unique' => false)
+            array('columns' => array('fieldId'), 'unique' => false),
         );
     }
 }
