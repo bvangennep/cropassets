@@ -55,6 +55,7 @@ class CropAssetsController extends BaseController
                 $this->returnJson(array(
                     'html' => $html,
                     'filename' => $asset->filename,
+                    'mimetype' => $asset->mimetype,
                     'settings'=> $cropAsset->settings,
                 ));
             }

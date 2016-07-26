@@ -28,6 +28,7 @@ var CropAssets = {
       var modal = null;
       var image;
       var cropper;
+      var mimetype = response.mimetype;
 
       if (response.error) {
         alert(response.error);
@@ -80,14 +81,16 @@ var CropAssets = {
               contentType: false,
               success: function (resp) {
                 Craft.cp.displayNotice(resp.message);
-                $cropAssetField.val(resp.cropAssetId);
+                if(resp.cropAssetId){
+                  $cropAssetField.val(resp.cropAssetId);
+                }
                 modal.hide();
               },
               error: function (resp) {
-                Craft.cp.displayNotice(resp.message);
+                Craft.cp.displayAlert(resp.message);
               },
             });
-          });
+          }, mimetype, 1);
         });
         modal.addListener(modal.$cancelBtn, 'click', 'cancel');
 
