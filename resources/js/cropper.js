@@ -19,8 +19,9 @@ var CropAssets = {
    * @param  {Number} elementId
    * @param  {Number} aspectRatio
    */
-  initCropper: function (elementId, aspectRatio, fieldId) {
-    var $cropAssetField = $('#fields-cropassets-' + fieldId);
+  initCropper: function (elementId, aspectRatio, fieldId, cropperFieldId) {
+    console.log(cropperFieldId);
+    var $cropAssetField = $('#' + cropperFieldId);
     Craft.postActionRequest('cropAssets/prepareForCrop', {
       elementId: elementId,
       cropAssetId: $cropAssetField.val(),
@@ -105,12 +106,13 @@ var CropAssets = {
       var $container = $(this).closest('.cropassets');
       var elementId = $(this).data('id');
       var fieldId = $container.data('field-id');
+      var cropperFieldId = $container.data('cropassets-field-id');
       var aspectratio = $container.data('aspectratio');
 
       var menuOptions = [{
         label: Craft.t('Crop asset'),
         onClick: function () {
-          CropAssets.initCropper(elementId, aspectratio, fieldId);
+          CropAssets.initCropper(elementId, aspectratio, fieldId, cropperFieldId);
         },
       }];
       new Garnish.ContextMenu(this, menuOptions, { menuClass: 'menu' });

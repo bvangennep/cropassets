@@ -92,7 +92,8 @@ class CropAssetsFieldType extends AssetsFieldType
         parent::onAfterElementSave();
 
         $fieldId = $this->model->id;
-        $postedFields = craft()->request->getPost('fields');
+        $postLocation = preg_replace('/\.([^.]+)$/', '', $this->contentPostLocation);
+        $postedFields = craft()->request->getPost($postLocation);
 
         if (isset($postedFields['cropassets'][$fieldId])) {
             $cropAssetId = $postedFields['cropassets'][$fieldId];
