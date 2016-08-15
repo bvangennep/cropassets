@@ -92,11 +92,13 @@ class CropAssetsPlugin extends BasePlugin
     {
         craft()->on('elements.onBeforeDeleteElements', function (Event $event) {
             $elementIds = $event->params['elementIds'];
+            $elementIdString = implode(',', $elementIds);
+
             $cropAssets = craft()->db->createCommand()
                 ->from('cropassets')
                 ->where('entryId in (:ids)')
                 ->orWhere('sourceAssetId in (:ids)')
-                ->bindParam(':ids', implode(',', $elementIds))
+                ->bindParam(':ids', $elementIdString)
                 ->queryAll();
 
             if (!empty($cropAssets)) {
