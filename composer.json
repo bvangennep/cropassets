@@ -13,7 +13,7 @@
             "email": "b.vangennep@nerds.company",
             "homepage": "http://www.nerds.company",
             "role": "Developer"
-        },
+        }
     ],
     "license": "MIT",
     "type": "craft-plugin",
