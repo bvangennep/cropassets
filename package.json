@@ -8,15 +8,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/boboldehampsink/cropassets.git"
+    "url": "git+https://github.com/nerds-and-company/cropassets.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/boboldehampsink/cropassets/issues"
+    "url": "https://github.com/nerds-and-company/cropassets/issues"
   },
-  "homepage": "https://github.com/boboldehampsink/cropassets#readme",
+  "homepage": "https://github.com/nerds-and-company/cropassets#readme",
   "dependencies": {
+    "blueimp-canvas-to-blob": "^3.3.0",
     "cropperjs": "^0.7.2"
   }
 }

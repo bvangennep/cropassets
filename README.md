@@ -21,6 +21,10 @@ After cropping you can show the cropped asset in the front-end.
 
 Changelog
 =================
+
+##2.0.1###
+ - Use a [polyfill library](https://github.com/blueimp/JavaScript-Canvas-to-Blob) for canvas to blob in ie11 and below
+
 ###2.0.0###
  - Rebuild to make use of client-side cropping with [cropperjs](https://github.com/fengyuanchen/cropperjs)
  - This is mainly done to prevent memory issues on the server.
