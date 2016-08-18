@@ -91,15 +91,9 @@ class CropAssetsFieldType extends AssetsFieldType
     {
         parent::onAfterElementSave();
 
-        $fieldId = $this->model->id;
-        $postLocation = preg_replace('/\.([^.]+)$/', '', $this->contentPostLocation);
-        $postedFields = craft()->request->getPost($postLocation);
-
-        if (isset($postedFields['cropassets'][$fieldId])) {
-            $cropAssetId = $postedFields['cropassets'][$fieldId];
-            $cropAsset = craft()->cropAssets->getCropAsset(['id' => $cropAssetId]);
+        $cropAsset = $this->getPostedCropAsset();
+        if ($cropAsset) {
             $cropAsset->entryId = $this->element->id;
-
             craft()->cropAssets->saveCropAsset($cropAsset);
         }
     }
@@ -127,7 +121,10 @@ class CropAssetsFieldType extends AssetsFieldType
      */
     protected function getInputTemplateVariables($name, $criteria)
     {
-        $cropAsset = $this->getCropAsset();
+        $cropAsset = $this->getPostedCropAsset();
+        if ($cropAsset === null) {
+            $cropAsset = $this->getCropAsset();
+        }
 
         $variables = parent::getInputTemplateVariables($name, $criteria);
         $variables['aspectRatio'] = $this->getSettings()->aspectRatio;
@@ -183,5 +180,24 @@ class CropAssetsFieldType extends AssetsFieldType
             'entryId' => @$this->element->id,
             'fieldId' => $this->model->id,
         ]);
+    }
+
+    /**
+     * Return posted crop asset id
+     * Suppresses array key errors
+     *
+     * @return CropAssetModel|null
+     */
+    private function getPostedCropAsset()
+    {
+        $fieldId = $this->model->id;
+        $postLocation = preg_replace('/\.([^.]+)$/', '', $this->contentPostLocation);
+        $postedFields = craft()->request->getPost($postLocation);
+
+        $cropAssetId = @$postedFields['cropassets'][$fieldId];
+        if ($cropAssetId) {
+            craft()->cropAssets->getCropAsset(['id' => $cropAssetId]);
+        }
+        return null;
     }
 }
