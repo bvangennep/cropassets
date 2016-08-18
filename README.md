@@ -1,4 +1,4 @@
-Crop Assets plugin for Craft CMS [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/boboldehampsink/cropassets/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/boboldehampsink/cropassets/?branch=master) [![Latest Stable Version](https://poser.pugx.org/boboldehampsink/cropassets/v/stable)](https://packagist.org/packages/boboldehampsink/cropassets) [![Total Downloads](https://poser.pugx.org/boboldehampsink/cropassets/downloads)](https://packagist.org/packages/boboldehampsink/cropassets) [![Latest Unstable Version](https://poser.pugx.org/boboldehampsink/cropassets/v/unstable)](https://packagist.org/packages/boboldehampsink/cropassets) [![License](https://poser.pugx.org/boboldehampsink/cropassets/license)](https://packagist.org/packages/boboldehampsink/cropassets)
+Crop Assets plugin for Craft CMS [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nerds-and-company/cropassets/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/boboldehampsink/cropassets/?branch=master) [![Latest Stable Version](https://poser.pugx.org/nerds-and-company/cropassets/v/stable)](https://packagist.org/packages/nerds-and-company/cropassets) [![Total Downloads](https://poser.pugx.org/nerds-and-company/cropassets/downloads)](https://packagist.org/packages/nerds-and-company/cropassets) [![Latest Unstable Version](https://poser.pugx.org/nerds-and-company/cropassets/v/unstable)](https://packagist.org/packages/nerds-and-company/cropassets) [![License](https://poser.pugx.org/nerds-and-company/cropassets/license)](https://packagist.org/packages/nerds-and-company/cropassets)
 =================
 
 Plugin/FieldType that allows you to crop an asset and show it in the front-end.
@@ -25,6 +25,7 @@ Changelog
  - Rebuild to make use of client-side cropping with [cropperjs](https://github.com/fengyuanchen/cropperjs)
  - This is mainly done to prevent memory issues on the server.
  - The cropped asset is stored in a configured asset source
+ - Renamed vendor to nerds-and-company
 
 ###1.0.2###
  - Verify that the image is present to prevent errors

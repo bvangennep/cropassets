@@ -1,13 +1,19 @@
 {
-    "name": "boboldehampsink/cropassets",
+    "name": "nerds-and-company/cropassets",
     "description": "Crop Assets Plugin for Craft CMS",
     "authors": [
         {
             "name": "Bob Olde Hampsink",
             "email": "b.oldehampsink@nerds.company",
-            "homepage": "http://github.com/boboldehampsink",
+            "homepage": "http://www.nerds.company",
             "role": "Developer"
-        }
+        },
+        {
+            "name": "Bart van Gennep",
+            "email": "b.vangennep@nerds.company",
+            "homepage": "http://www.nerds.company",
+            "role": "Developer"
+        },
     ],
     "license": "MIT",
     "type": "craft-plugin",

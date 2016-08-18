@@ -1,6 +1,6 @@
 {
   "name": "cropassets",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Crop Assets Plugin for Craft CMS",
   "main": "resources/js/cropper.js",
   "scripts": {
