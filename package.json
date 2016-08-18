@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/boboldehampsink/cropassets#readme",
   "dependencies": {
+    "blueimp-canvas-to-blob": "^3.3.0",
     "cropperjs": "^0.7.2"
   }
 }
