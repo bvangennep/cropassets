@@ -7,11 +7,11 @@ namespace Craft;
  *
  * Adds the ability to manually crop and resize assets per field.
  *
- * @author    Bob Olde Hampsink <b.oldehampsink@nerds.company>
- * @copyright Copyright (c) 2016, Bob Olde Hampsink
+ * @author    Nerds & Company
+ * @copyright Copyright (c) 2016, Nerds & Company
  * @license   MIT
  *
- * @link      http://github.com/boboldehampsink
+ * @link      http://www.nerds.company
  */
 class CropAssetsFieldType extends AssetsFieldType
 {
@@ -42,7 +42,7 @@ class CropAssetsFieldType extends AssetsFieldType
     public function prepValue($value)
     {
         // Behave as normal asset in back-end
-        if (craft()->request->isCpRequest()) {
+        if (craft()->request->isCpRequest() && !craft()->request->isLivePreview()) {
             return parent::prepValue($value);
         }
 
@@ -176,7 +176,11 @@ class CropAssetsFieldType extends AssetsFieldType
      */
     private function getCropAsset()
     {
-        return craft()->cropAssets->getCropAsset([
+        $cropAsset = null;
+        if (craft()->request->isPostRequest()) {
+            $cropAsset = $this->getPostedCropAsset();
+        }
+        return $cropAsset ? $cropAsset : craft()->cropAssets->getCropAsset([
             'entryId' => @$this->element->id,
             'fieldId' => $this->model->id,
         ]);
