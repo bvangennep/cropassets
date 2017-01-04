@@ -200,7 +200,7 @@ class CropAssetsFieldType extends AssetsFieldType
 
         $cropAssetId = @$postedFields['cropassets'][$fieldId];
         if ($cropAssetId) {
-            craft()->cropAssets->getCropAsset(['id' => $cropAssetId]);
+            return craft()->cropAssets->getCropAsset(['id' => $cropAssetId]);
         }
         return null;
     }
