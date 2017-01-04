@@ -81,8 +81,12 @@ var CropAssets = {
               contentType: false,
               success: function (resp) {
                 Craft.cp.displayNotice(resp.message);
-                if(resp.cropAssetId){
+                if(resp.cropAssetId) {
                   $cropAssetField.val(resp.cropAssetId);
+                  // Update Live Preview
+                  if (typeof Craft.livePreview != 'undefined') {
+                    Craft.livePreview.updateIframe(true);
+                  }
                 }
                 modal.hide();
               },
