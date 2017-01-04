@@ -7,11 +7,11 @@ namespace Craft;
  *
  * Adds the ability to manually crop and resize assets per field.
  *
- * @author    Bob Olde Hampsink <b.oldehampsink@nerds.company>
- * @copyright Copyright (c) 2016, Bob Olde Hampsink
+ * @author    Nerds & Company
+ * @copyright Copyright (c) 2016, Nerds & Company
  * @license   MIT
  *
- * @link      http://github.com/boboldehampsink
+ * @link      http://www.nerds.company
  */
 class CropAssetsService extends BaseApplicationComponent
 {

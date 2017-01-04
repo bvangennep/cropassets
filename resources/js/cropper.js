@@ -20,7 +20,6 @@ var CropAssets = {
    * @param  {Number} aspectRatio
    */
   initCropper: function (elementId, aspectRatio, fieldId, cropperFieldId) {
-    console.log(cropperFieldId);
     var $cropAssetField = $('#' + cropperFieldId);
     Craft.postActionRequest('cropAssets/prepareForCrop', {
       elementId: elementId,
@@ -88,7 +87,7 @@ var CropAssets = {
                 modal.hide();
               },
               error: function (resp) {
-                Craft.cp.displayAlert(resp.message);
+                Craft.cp.displayError(resp.message);
               },
             });
           }, mimetype, 1);
